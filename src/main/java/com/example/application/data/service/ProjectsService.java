@@ -28,6 +28,9 @@ public class ProjectsService {
         repository.deleteById(id);
     }
 
+    public void deleteProject(Projects projects){repository.delete(projects);
+    }
+
     public Page<Projects> list(Pageable pageable) {
         return repository.findAll(pageable);
     }

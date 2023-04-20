@@ -9,7 +9,6 @@ public class Projects extends AbstractEntity {
     private Integer projectNumber;
     private String projectName;
     private LocalDate dateOfBeginn;
-    private String phone;
     private Integer priceNetto;
     private Integer priceBrutto;
     private String statusOfProject;
@@ -33,12 +32,7 @@ public class Projects extends AbstractEntity {
     public void setDateOfBeginn(LocalDate dateOfBeginn) {
         this.dateOfBeginn = dateOfBeginn;
     }
-    public String getPhone() {
-        return phone;
-    }
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+
     public Integer getPriceNetto() {
         return priceNetto;
     }

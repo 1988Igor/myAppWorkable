@@ -1,6 +1,7 @@
 package com.example.application.views.about;
 
 import com.example.application.data.entity.Projects;
+import com.example.application.data.service.ProjectsRepository;
 import com.example.application.data.service.ProjectsService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.UI;
@@ -27,6 +28,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import java.util.Optional;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
@@ -37,13 +39,14 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
     private final String PROJECTS_ID = "projectsID";
     private final String PROJECTS_EDIT_ROUTE_TEMPLATE = "about/%s/edit";
+    private  final ProjectsRepository projectsRepository;
 
     private final Grid<Projects> grid = new Grid<>(Projects.class, false);
 
     private TextField projectNumber;
     private TextField projectName;
     private DatePicker dateOfBeginn;
-    private TextField phone;
+
     private TextField priceNetto;
     private TextField priceBrutto;
     private TextField statusOfProject;
@@ -51,6 +54,7 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
     private final Button cancel = new Button("Cancel");
     private final Button save = new Button("Save");
+    private final Button delete = new Button("Delete");
 
     private final BeanValidationBinder<Projects> binder;
 
@@ -58,7 +62,8 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
     private final ProjectsService projectsService;
 
-    public AboutView(ProjectsService projectsService) {
+    public AboutView(ProjectsRepository projectsRepository, ProjectsService projectsService) {
+        this.projectsRepository = projectsRepository;
         this.projectsService = projectsService;
         addClassNames("about-view");
 
@@ -74,7 +79,6 @@ public class AboutView extends Div implements BeforeEnterObserver {
         grid.addColumn("projectNumber").setAutoWidth(true);
         grid.addColumn("projectName").setAutoWidth(true);
         grid.addColumn("dateOfBeginn").setAutoWidth(true);
-        grid.addColumn("phone").setAutoWidth(true);
         grid.addColumn("priceNetto").setAutoWidth(true);
         grid.addColumn("priceBrutto").setAutoWidth(true);
         grid.addColumn("statusOfProject").setAutoWidth(true);
@@ -132,7 +136,22 @@ public class AboutView extends Div implements BeforeEnterObserver {
                 Notification.show("Failed to update the data. Check again that all values are valid");
             }
         });
+
+        delete.addClickListener(event ->{
+            deleteProject(this.projects);
+            refreshGrid();
+            Notification.show("Data deleted");
+            UI.getCurrent().navigate(AboutView.class);
+
+
+        } );
+
+
+
+
     }
+
+
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
@@ -164,12 +183,11 @@ public class AboutView extends Div implements BeforeEnterObserver {
         projectNumber = new TextField("Project Number");
         projectName = new TextField("Project Name");
         dateOfBeginn = new DatePicker("Date Of Beginn");
-        phone = new TextField("Phone");
         priceNetto = new TextField("Price Netto");
         priceBrutto = new TextField("Price Brutto");
         statusOfProject = new TextField("Status Of Project");
         comments = new TextField("Comments");
-        formLayout.add(projectNumber, projectName, dateOfBeginn, phone, priceNetto, priceBrutto, statusOfProject,
+        formLayout.add(projectNumber, projectName, dateOfBeginn, priceNetto, priceBrutto, statusOfProject,
                 comments);
 
         editorDiv.add(formLayout);
@@ -183,7 +201,8 @@ public class AboutView extends Div implements BeforeEnterObserver {
         buttonLayout.setClassName("button-layout");
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        buttonLayout.add(save, cancel, delete);
         editorLayoutDiv.add(buttonLayout);
     }
 
@@ -208,4 +227,9 @@ public class AboutView extends Div implements BeforeEnterObserver {
         binder.readBean(this.projects);
 
     }
+    private void  deleteProject(Projects projects){
+        projectsRepository.delete(projects);
+
+    }
+
 }
