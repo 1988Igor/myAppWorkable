@@ -4,6 +4,7 @@ import com.example.application.data.entity.Projects;
 import com.example.application.data.service.ProjectsRepository;
 import com.example.application.data.service.ProjectsService;
 import com.example.application.views.MainLayout;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -15,12 +16,14 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -40,8 +43,10 @@ public class AboutView extends Div implements BeforeEnterObserver {
     private final String PROJECTS_ID = "projectsID";
     private final String PROJECTS_EDIT_ROUTE_TEMPLATE = "about/%s/edit";
     private  final ProjectsRepository projectsRepository;
+    private final ProjectsService projectsService;
 
     private final Grid<Projects> grid = new Grid<>(Projects.class, false);
+    TextField filterText = new TextField();
 
     private TextField projectNumber;
     private TextField projectName;
@@ -60,7 +65,9 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
     private Projects projects;
 
-    private final ProjectsService projectsService;
+
+
+
 
     public AboutView(ProjectsRepository projectsRepository, ProjectsService projectsService) {
         this.projectsRepository = projectsRepository;
@@ -70,10 +77,20 @@ public class AboutView extends Div implements BeforeEnterObserver {
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
 
+
         createGridLayout(splitLayout);
         createEditorLayout(splitLayout);
 
+
         add(splitLayout);
+        add(getToolbar());
+
+        updateList();
+        //add(updateList());
+
+
+
+
 
         // Configure Grid
         grid.addColumn("projectNumber").setAutoWidth(true);
@@ -148,9 +165,7 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
 
 
-
     }
-
 
 
     @Override
@@ -232,4 +247,32 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
     }
 
+
+
+    private HorizontalLayout getToolbar() {
+        filterText.setPlaceholder("Filter by name...");
+        filterText.setClearButtonVisible(true);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateList());
+
+
+        Button addContactButton = new Button("Add contact");
+
+
+        var toolbar = new HorizontalLayout(filterText, addContactButton);
+        toolbar.addClassName("toolbar");
+        toolbar.setVerticalComponentAlignment(FlexComponent.Alignment.END);
+
+        return toolbar;
+    }
+    private void updateList(){
+        grid.setItems(projectsService.findAllContacts(filterText.getValue()));
+
+
+    }
+
+
+
+
 }
+

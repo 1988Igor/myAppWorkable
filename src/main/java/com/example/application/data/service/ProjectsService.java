@@ -1,8 +1,11 @@
 package com.example.application.data.service;
 
 import com.example.application.data.entity.Projects;
+
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,24 @@ public class ProjectsService {
 
     public int count() {
         return (int) repository.count();
+    }
+
+    public List<Projects> listByName(String name, PageRequest of) {
+        return repository.findAll();
+    }
+
+
+
+    public  long countContacts(){
+        return repository.count();
+    }
+
+    public List<Projects> findAllContacts(String filterText){
+        if(filterText == null || filterText.isEmpty()){
+            return  repository.findAll();
+        } else{
+            return repository.search(filterText);
+        }
     }
 
 }
