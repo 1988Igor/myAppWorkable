@@ -32,12 +32,14 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import java.util.Optional;
 
+import jakarta.annotation.security.PermitAll;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
-@PageTitle("CRM Projects")
+@PageTitle("CRM")
 @Route(value = "about/:projectsID?/:action?(edit)", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
+@PermitAll
 public class AboutView extends Div implements BeforeEnterObserver {
 
     private final String PROJECTS_ID = "projectsID";
