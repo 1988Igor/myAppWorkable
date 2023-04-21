@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <!-- Project from https://start.vaadin.com/project/c23d3fa4-4515-48a9-99aa-169d8d8a8fa0 -->
     <groupId>com.example.application</groupId>
-    <artifactId>myapp</artifactId>
+    <artifactId>database-mysql-example</artifactId>
     <name>myapp</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -59,16 +59,22 @@
             <version>1.1.0</version>
         </dependency>
 
+
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
 
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

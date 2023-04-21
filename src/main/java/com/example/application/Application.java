@@ -2,6 +2,7 @@ package com.example.application;
 
 import com.example.application.data.service.ProjectsRepository;
 import com.vaadin.flow.component.page.AppShellConfigurator;
+import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 import javax.sql.DataSource;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +18,8 @@ import org.springframework.context.annotation.Bean;
  * and some desktop browsers.
  *
  */
+@PWA(name = "My Projects CRM Service",
+        shortName = "MyPCS")
 @SpringBootApplication
 @Theme(value = "myapp")
 public class Application implements AppShellConfigurator {

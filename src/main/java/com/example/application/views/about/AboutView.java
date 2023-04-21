@@ -1,10 +1,10 @@
 package com.example.application.views.about;
 
+import com.example.application.data.entity.ContactForm;
 import com.example.application.data.entity.Projects;
 import com.example.application.data.service.ProjectsRepository;
 import com.example.application.data.service.ProjectsService;
 import com.example.application.views.MainLayout;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -35,7 +35,7 @@ import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
-@PageTitle("About")
+@PageTitle("CRM Projects")
 @Route(value = "about/:projectsID?/:action?(edit)", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 public class AboutView extends Div implements BeforeEnterObserver {
@@ -65,6 +65,7 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
     private Projects projects;
 
+    ContactForm form;
 
 
 
@@ -78,6 +79,8 @@ public class AboutView extends Div implements BeforeEnterObserver {
         SplitLayout splitLayout = new SplitLayout();
 
 
+
+
         createGridLayout(splitLayout);
         createEditorLayout(splitLayout);
 
@@ -85,14 +88,16 @@ public class AboutView extends Div implements BeforeEnterObserver {
         add(splitLayout);
         add(getToolbar());
 
+
         updateList();
-        //add(updateList());
+
 
 
 
 
 
         // Configure Grid
+        grid.addClassNames("contact-grid");
         grid.addColumn("projectNumber").setAutoWidth(true);
         grid.addColumn("projectName").setAutoWidth(true);
         grid.addColumn("dateOfBeginn").setAutoWidth(true);
@@ -250,6 +255,7 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
 
     private HorizontalLayout getToolbar() {
+        addClassName("tool-view");
         filterText.setPlaceholder("Filter by name...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
@@ -257,6 +263,7 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
 
         Button addContactButton = new Button("Add contact");
+        addContactButton.addClickListener(click -> addContact());
 
 
         var toolbar = new HorizontalLayout(filterText, addContactButton);
@@ -265,6 +272,31 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
         return toolbar;
     }
+
+    private void addContact() {
+        grid.asSingleSelect().clear();
+        editContact(new Projects());
+    }
+
+    public void editContact(Projects contact) {
+        if (contact == null) {
+            closeEditor();
+        } else {
+            form.setContact(contact);
+            form.setVisible(true);
+            addClassName("editing");
+        }
+    }
+    private void closeEditor() {
+        form.setContact(null);
+        form.setVisible(false);
+        removeClassName("editing");
+    }
+
+
+
+
+
     private void updateList(){
         grid.setItems(projectsService.findAllContacts(filterText.getValue()));
 

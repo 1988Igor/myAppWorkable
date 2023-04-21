@@ -11,9 +11,14 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.orderedlayout.Scroller;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.vaadin.lineawesome.LineAwesomeIcon;
+
+import javax.swing.text.html.ListView;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -26,6 +31,7 @@ public class MainLayout extends AppLayout {
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
+        createDrawer();
     }
 
     private void addHeaderContent() {
@@ -45,7 +51,7 @@ public class MainLayout extends AppLayout {
 
         Scroller scroller = new Scroller(createNavigation());
 
-        addToDrawer(header, scroller, createFooter());
+        addToDrawer(header,  createFooter());
     }
 
     private AppNav createNavigation() {
@@ -53,7 +59,7 @@ public class MainLayout extends AppLayout {
         // For documentation, visit https://github.com/vaadin/vcf-nav#readme
         AppNav nav = new AppNav();
 
-        nav.addItem(new AppNavItem("About", AboutView.class, LineAwesomeIcon.COLUMNS_SOLID.create()));
+        nav.addItem(new AppNavItem("Lists", AboutView.class, LineAwesomeIcon.LIST_OL_SOLID.create()));
 
         return nav;
     }
@@ -73,5 +79,16 @@ public class MainLayout extends AppLayout {
     private String getCurrentPageTitle() {
         PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
         return title == null ? "" : title.value();
+    }
+
+    private void createDrawer() {
+        RouterLink listView = new RouterLink("Lists", AboutView.class);
+        listView.setHighlightCondition(HighlightConditions.sameLocation());
+
+            addToDrawer(new VerticalLayout(
+                    listView,
+                    new RouterLink("Dashboard", DashboardView.class)
+            ));
+
     }
 }
