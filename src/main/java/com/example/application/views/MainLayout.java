@@ -40,7 +40,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void createHeader() {
-       H1 logo = new H1("CRM");
+       H1 logo = new H1("Projects");
         logo.addClassNames(
                 LumoUtility.FontSize.LARGE,
                 LumoUtility.Margin.MEDIUM);
@@ -60,14 +60,14 @@ public class MainLayout extends AppLayout {
         addToNavbar(header);
     }
 
-    private void addHeaderContent() {
+   private void addHeaderContent() {
         DrawerToggle toggle = new DrawerToggle();
         toggle.getElement().setAttribute("aria-label", "Menu toggle");
 
         viewTitle = new H2();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
 
-        addToNavbar(true, toggle, viewTitle);
+        addToNavbar(true);
     }
 
     private void addDrawerContent() {
@@ -77,12 +77,12 @@ public class MainLayout extends AppLayout {
 
         Scroller scroller = new Scroller(createNavigation());
 
-        addToDrawer(header,  createFooter(), scroller);
+        addToDrawer(header,  createFooter());
     }
 
     private AppNav createNavigation() {
-        // AppNav is not yet an official component.
-        // For documentation, visit https://github.com/vaadin/vcf-nav#readme
+        //AppNav is not yet an official component.
+        //For documentation, visit https://github.com/vaadin/vcf-nav#readme
         AppNav nav = new AppNav();
 
         nav.addItem(new AppNavItem("Lists", AboutView.class, LineAwesomeIcon.LIST_OL_SOLID.create()));

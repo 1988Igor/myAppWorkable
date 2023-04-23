@@ -80,21 +80,13 @@ public class AboutView extends Div implements BeforeEnterObserver {
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
 
-
-
-
         createGridLayout(splitLayout);
         createEditorLayout(splitLayout);
-
 
         add(splitLayout);
         add(getToolbar());
 
-
         updateList();
-
-
-
 
 
 
@@ -110,7 +102,8 @@ public class AboutView extends Div implements BeforeEnterObserver {
         grid.setItems(query -> projectsService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());
-        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        grid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS);
+        grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {

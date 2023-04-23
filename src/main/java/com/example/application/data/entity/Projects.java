@@ -1,9 +1,13 @@
 package com.example.application.data.entity;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.persistence.Entity;
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 
 @Entity
+@Component
 public class Projects extends AbstractEntity {
 
     private Integer projectNumber;

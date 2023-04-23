@@ -4,6 +4,8 @@ import com.example.application.data.entity.Projects;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.hibernate.annotations.Formula;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +58,10 @@ public class ProjectsService {
         return repository.count();
     }
 
+
+
+
+
     public List<Projects> findAllContacts(String filterText){
         if(filterText == null || filterText.isEmpty()){
             return  repository.findAll();
@@ -64,4 +70,7 @@ public class ProjectsService {
         }
     }
 
+    public List<Projects> getAllProjects() {
+        return repository.findAll();
+    }
 }
