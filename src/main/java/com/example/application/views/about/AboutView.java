@@ -79,8 +79,8 @@ public class AboutView extends Div implements BeforeEnterObserver {
         createGridLayout(splitLayout);
         createEditorLayout(splitLayout);
 
-        add(splitLayout);
         add(getToolbar());
+        add(splitLayout);
 
         updateList();
 
@@ -260,6 +260,7 @@ public class AboutView extends Div implements BeforeEnterObserver {
         var toolbar = new HorizontalLayout(filterText, addContactButton);
         toolbar.addClassName("toolbar");
         toolbar.setVerticalComponentAlignment(FlexComponent.Alignment.END);
+
 
         return toolbar;
     }
