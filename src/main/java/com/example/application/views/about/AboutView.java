@@ -26,6 +26,7 @@ import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+
 import java.util.Optional;
 
 import jakarta.annotation.security.PermitAll;
@@ -40,7 +41,7 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
     private final String PROJECTS_ID = "projectsID";
     private final String PROJECTS_EDIT_ROUTE_TEMPLATE = "about/%s/edit";
-    private  final ProjectsRepository projectsRepository;
+    private final ProjectsRepository projectsRepository;
     private final ProjectsService projectsService;
 
     private final Grid<Projects> grid = new Grid<>(Projects.class, false);
@@ -66,8 +67,6 @@ public class AboutView extends Div implements BeforeEnterObserver {
     ContactForm form;
 
 
-
-
     public AboutView(ProjectsRepository projectsRepository, ProjectsService projectsService) {
         this.projectsRepository = projectsRepository;
         this.projectsService = projectsService;
@@ -85,7 +84,6 @@ public class AboutView extends Div implements BeforeEnterObserver {
         updateList();
 
 
-
         // Configure Grid
         grid.addClassNames("contact-grid");
         grid.addColumn("projectNumber").setAutoWidth(true);
@@ -96,7 +94,7 @@ public class AboutView extends Div implements BeforeEnterObserver {
         grid.addColumn("statusOfProject").setAutoWidth(true);
         grid.addColumn("comments").setAutoWidth(true);
         grid.setItems(query -> projectsService.list(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
+                        PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());
         grid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS);
         grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
@@ -150,15 +148,14 @@ public class AboutView extends Div implements BeforeEnterObserver {
             }
         });
 
-        delete.addClickListener(event ->{
+        delete.addClickListener(event -> {
             deleteProject(this.projects);
             refreshGrid();
             Notification.show("Data deleted");
             UI.getCurrent().navigate(AboutView.class);
 
 
-        } );
-
+        });
 
 
     }
@@ -189,6 +186,7 @@ public class AboutView extends Div implements BeforeEnterObserver {
         Div editorDiv = new Div();
         editorDiv.setClassName("editor");
         editorLayoutDiv.add(editorDiv);
+
 
         FormLayout formLayout = new FormLayout();
         projectNumber = new TextField("Project Number");
@@ -238,11 +236,11 @@ public class AboutView extends Div implements BeforeEnterObserver {
         binder.readBean(this.projects);
 
     }
-    private void  deleteProject(Projects projects){
+
+    private void deleteProject(Projects projects) {
         projectsRepository.delete(projects);
 
     }
-
 
 
     private HorizontalLayout getToolbar() {
@@ -255,6 +253,8 @@ public class AboutView extends Div implements BeforeEnterObserver {
 
         Button addContactButton = new Button("Add contact");
         addContactButton.addClickListener(click -> addContact());
+        addContactButton.getStyle().set("color", "white");
+        addContactButton.getStyle().set("background-color", "green");
 
 
         var toolbar = new HorizontalLayout(filterText, addContactButton);
@@ -279,6 +279,7 @@ public class AboutView extends Div implements BeforeEnterObserver {
             addClassName("editing");
         }
     }
+
     private void closeEditor() {
         form.setContact(null);
         form.setVisible(false);
@@ -286,19 +287,11 @@ public class AboutView extends Div implements BeforeEnterObserver {
     }
 
 
-
-
-
-    private void updateList(){
+    private void updateList() {
         grid.setItems(projectsService.findAllContacts(filterText.getValue()));
 
 
     }
-
-
-
-
-
 
 
 }

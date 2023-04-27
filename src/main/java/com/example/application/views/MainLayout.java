@@ -87,6 +87,7 @@ public class MainLayout extends AppLayout {
 
         nav.addItem(new AppNavItem("Lists", AboutView.class, LineAwesomeIcon.LIST_OL_SOLID.create()));
 
+
         return nav;
     }
 
@@ -110,6 +111,7 @@ public class MainLayout extends AppLayout {
     private void createDrawer() {
         RouterLink listView = new RouterLink("Lists", AboutView.class);
         listView.setHighlightCondition(HighlightConditions.sameLocation());
+
 
             addToDrawer(new VerticalLayout(
                     listView,

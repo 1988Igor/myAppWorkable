@@ -1,6 +1,7 @@
 package com.example.application;
 
 import com.example.application.data.service.ProjectsRepository;
+import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
@@ -18,10 +19,16 @@ import org.springframework.context.annotation.Bean;
  * and some desktop browsers.
  *
  */
-@PWA(name = "My Projects CRM Service",
-        shortName = "MyPCS")
 @SpringBootApplication
 @Theme(value = "myapp")
+@PWA(name = "My Projects CRM Service",
+        shortName = "MyPCS",
+        offlinePath="offline.html",
+        //offlineResources = { "META-INF/resources/icon/icon.png", "META-INF/resources/images/offline.png"})
+        offlineResources = {"images/offline.png"}
+)
+@NpmPackage(value = "line-awesome", version =  "1.3.0")
+
 public class Application implements AppShellConfigurator {
 
     public static void main(String[] args) {
