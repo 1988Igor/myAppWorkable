@@ -23,11 +23,11 @@ import org.springframework.context.annotation.Bean;
 @Theme(value = "myapp")
 @PWA(name = "My Projects CRM Service",
         shortName = "MyPCS",
-        offlinePath="offline.html",
-        //offlineResources = { "META-INF/resources/icon/icon.png", "META-INF/resources/images/offline.png"})
-        offlineResources = {"images/offline.png"}
+        offlinePath= "offline.html",
+        offlineResources = {"images/logo.png", "images/offline.png"}
+        //offlineResources = {"images/offline.png", "images/offline.png"}
 )
-@NpmPackage(value = "line-awesome", version =  "1.3.0")
+//@NpmPackage(value = "line-awesome", version =  "1.3.0")
 
 public class Application implements AppShellConfigurator {
 
